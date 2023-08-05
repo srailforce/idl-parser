@@ -1,0 +1,31 @@
+// GET path?query-params request -> responseType
+endpoint = { method ~ SPACE ~ path ~ query_params ~ (SPACE ~ request_type)? ~ (SPACE ~ "->" ~ SPACE ~ response_type)? }
+/// #00FF00
+method = { get | post | put | delete }
+get = { "GET" | "get" }
+post = { "POST" | "post" }
+put = { "PUT" | "put" }
+delete = { "DELETE" | "delete" }
+/// #FF0000
+path = { (segment | path_variable)+ }
+segment = { "/" ~ name }
+
+path_variable = _{ "/{" ~ variable ~ "}" }
+
+query_params = { "?" ~ variable ~ ("&" ~ variable)* | "" }
+
+variable = { name ~ ":" ~ variable_type }
+
+name = { ASCII_ALPHA ~ ASCII_ALPHANUMERIC* }
+
+request_type = { name }
+response_type = { name }
+
+/// #66000FF
+variable_type = @{
+    "string" | "short" | "int" | "long" | "byte" | "float" | "double" | "bool"
+}
+
+SPACE = _{("\r" | "\n" | "\r\n" | " ")+ }
+
+
